@@ -1,0 +1,111 @@
+{
+  "2": {
+    "member1": [
+      "Domain/Models.cs",
+      "Input/TaskParser.cs",
+      "Program.cs",
+      "Tests/InputTests.cs",
+      "Domain/PlanningSessionFactory.cs",
+      "Tests/PlanningFactoryTests.cs",
+      "Domain/TaskSelection.cs",
+      "Tests/SelectionTests.cs",
+      "Domain/PlanningState.cs",
+      "Tests/PlanningStateTests.cs"
+    ],
+    "member2": [
+      "Domain/TaskScoring.cs",
+      "Domain/ScoringPolicies.cs",
+      "Tests/ScoringTests.cs",
+      "Domain/PlanningWorkflow.cs",
+      "Tests/PlanningWorkflowTests.cs",
+      "Domain/PlanBuilder.cs",
+      "Domain/TaskPipeline.cs",
+      "Tests/PlanTests.cs",
+      "Domain/PlanningPresentation.cs",
+      "Tests/PlanningPresentationTests.cs",
+      "Domain/PlanningRules.cs",
+      "Tests/PlanningRulesTests.cs"
+    ]
+  },
+  "3": {
+    "member1": [
+      "Domain/Models.cs",
+      "Input/TaskParser.cs",
+      "Program.cs",
+      "Tests/InputTests.cs",
+      "Domain/PlanningSessionFactory.cs",
+      "Tests/PlanningFactoryTests.cs"
+    ],
+    "member2": [
+      "Domain/TaskSelection.cs",
+      "Tests/SelectionTests.cs",
+      "Domain/PlanningState.cs",
+      "Tests/PlanningStateTests.cs"
+    ],
+    "member3": [
+      "Domain/TaskScoring.cs",
+      "Domain/ScoringPolicies.cs",
+      "Tests/ScoringTests.cs",
+      "Domain/PlanningWorkflow.cs",
+      "Tests/PlanningWorkflowTests.cs",
+      "Domain/PlanBuilder.cs",
+      "Domain/TaskPipeline.cs",
+      "Tests/PlanTests.cs",
+      "Domain/PlanningPresentation.cs",
+      "Tests/PlanningPresentationTests.cs",
+      "Domain/PlanningRules.cs",
+      "Tests/PlanningRulesTests.cs"
+    ]
+  },
+  "4": {
+    "member1": [
+      "Domain/Models.cs",
+      "Input/TaskParser.cs",
+      "Program.cs",
+      "Tests/InputTests.cs",
+      "Domain/PlanningSessionFactory.cs",
+      "Tests/PlanningFactoryTests.cs"
+    ],
+    "member2": [
+      "Domain/TaskSelection.cs",
+      "Tests/SelectionTests.cs",
+      "Domain/PlanningState.cs",
+      "Tests/PlanningStateTests.cs"
+    ],
+    "member3": [
+      "Domain/TaskScoring.cs",
+      "Domain/ScoringPolicies.cs",
+      "Tests/ScoringTests.cs",
+      "Domain/PlanningWorkflow.cs",
+      "Tests/PlanningWorkflowTests.cs"
+    ],
+    "member4": [
+      "Domain/PlanBuilder.cs",
+      "Domain/TaskPipeline.cs",
+      "Tests/PlanTests.cs",
+      "Domain/PlanningPresentation.cs",
+      "Tests/PlanningPresentationTests.cs",
+      "Domain/PlanningRules.cs",
+      "Tests/PlanningRulesTests.cs"
+    ]
+  },
+  "common": [
+    ".gitignore",
+    "global.json",
+    "NuGet.Config",
+    "DailyPlanner.sln",
+    "DailyPlanner.csproj",
+    "Tests/DailyPlanner.Tests.csproj",
+    "Tests/Program.cs",
+    "README.md",
+    "samples/tasks.json",
+    "samples/empty.json",
+    "samples/invalid.json",
+    "samples/malformed.json",
+    "samples/missing-field.json",
+    "samples/null.json",
+    "handoff/TEAM.md",
+    "handoff/GIT_STEPS.md",
+    "handoff/ownership.json"
+  ]
+}

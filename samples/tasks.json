@@ -1,0 +1,9 @@
+[
+  { "id": "T1", "title": "Review FP notes", "date": "2026-10-13", "importance": 5, "minutes": 60, "completed": false },
+  { "id": "T2", "title": "Finish C# exercises", "date": "2026-10-13", "importance": 4, "minutes": 30, "completed": false },
+  { "id": "T3", "title": "Plan tomorrow", "date": "2026-10-13", "importance": 3, "minutes": 10, "completed": false },
+  { "id": "T4", "title": "Sort downloads", "date": "2026-10-13", "importance": 2, "minutes": 15, "completed": false },
+  { "id": "T5", "title": "Submit lab report", "date": "2026-10-13", "importance": 5, "minutes": 15, "completed": true },
+  { "id": "T6", "title": "Read next chapter", "date": "2026-10-14", "importance": 4, "minutes": 20, "completed": false },
+  { "id": "T7", "title": "Practice delegates", "date": "2026-10-13", "importance": 4, "minutes": 20, "completed": false }
+]
