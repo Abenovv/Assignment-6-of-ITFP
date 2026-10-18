@@ -7,6 +7,15 @@ namespace Tracker
 {
     class Program
     {
+        private static Result<string> ReadInput(string path)
+        {
+            try { return Result<string>.Ok(File.ReadAllText(path)); }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException)
+            {
+                return Result<string>.Fail($"Cannot read input file: {error.Message}");
+            }
+        }
+
         static int Main(string[] args)
         {
             if (args is ["--workflow-demo"])
@@ -63,27 +72,23 @@ namespace Tracker
                     return 1;
             }
 
-            string json;
-            try
-            {
-                json = File.ReadAllText(path);
-            }
-            catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException)
-            {
-                Console.Error.WriteLine($"Cannot read input file: {error.Message}");
-                return 1;
-            }
+            var plans = ReadInput(path)
+                .Bind(TaskParser.Parse)
+                .Map(tasks => policies.Select(policy =>
+                    (policy.Name, Plan: TaskPipeline.CreatePlan(tasks, date, minimum, policy.Score))).ToArray());
 
-            if (!TaskParser.TryParse(json, out var tasks, out string message))
+            if (plans is Result<(string Name, DailyPlan Plan)[]>.Failure failure)
             {
-                Console.Error.WriteLine($"Input rejected: {message}");
+                Console.Error.WriteLine(failure.Error);
                 return 1;
             }
+            if (plans is not Result<(string Name, DailyPlan Plan)[]>.Success success)
+                throw new InvalidOperationException("Unknown planning result.");
 
             bool rejected = false;
-            foreach (var policy in policies)
+            foreach (var policy in success.Value)
             {
-                DailyPlan plan = TaskPipeline.CreatePlan(tasks, date, minimum, policy.Score);
+                DailyPlan plan = policy.Plan;
                 Console.WriteLine($"{policy.Name} | {plan.Date:yyyy-MM-dd}");
                 foreach (RankedTask item in plan.Tasks)
                 {

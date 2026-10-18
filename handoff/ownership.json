@@ -10,7 +10,9 @@
       "Domain/TaskSelection.cs",
       "Tests/SelectionTests.cs",
       "Domain/PlanningState.cs",
-      "Tests/PlanningStateTests.cs"
+      "Tests/PlanningStateTests.cs",
+      "Domain/Result.cs",
+      "Tests/ResultTests.cs"
     ],
     "member2": [
       "Domain/TaskScoring.cs",
@@ -34,7 +36,9 @@
       "Program.cs",
       "Tests/InputTests.cs",
       "Domain/PlanningSessionFactory.cs",
-      "Tests/PlanningFactoryTests.cs"
+      "Tests/PlanningFactoryTests.cs",
+      "Domain/Result.cs",
+      "Tests/ResultTests.cs"
     ],
     "member2": [
       "Domain/TaskSelection.cs",
@@ -64,7 +68,9 @@
       "Program.cs",
       "Tests/InputTests.cs",
       "Domain/PlanningSessionFactory.cs",
-      "Tests/PlanningFactoryTests.cs"
+      "Tests/PlanningFactoryTests.cs",
+      "Domain/Result.cs",
+      "Tests/ResultTests.cs"
     ],
     "member2": [
       "Domain/TaskSelection.cs",

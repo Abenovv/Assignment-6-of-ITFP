@@ -12,6 +12,10 @@ internal static partial class Program
     {
         (string Name, Action Run)[] tests =
         [
+            ("Map and Bind compose the valid sample workflow", ResultSuccessWorkflow),
+            ("Failed validation skips planning and scoring", ParseFailureSkipsPlanning),
+            ("Failed file read skips parsing and planning", ReadFailureSkipsParsing),
+            ("Failed Bind skips later Bind and Map callbacks", BindFailureSkipsFollowingStep),
             ("Normal workflow matches the sample plan", NormalWorkflow),
             ("An empty dataset gives an empty plan", EmptyDataset),
             ("The exact importance threshold is included", ImportanceBoundary),
