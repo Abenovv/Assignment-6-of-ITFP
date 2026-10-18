@@ -11,6 +11,11 @@ public sealed record RawTask(
 
 public static class TaskParser
 {
+    public static Result<IReadOnlyList<TaskItem>> Parse(string? json) =>
+        TryParse(json, out var tasks, out string error)
+            ? Result<IReadOnlyList<TaskItem>>.Ok(tasks)
+            : Result<IReadOnlyList<TaskItem>>.Fail($"Input rejected: {error}");
+
     public static bool TryParse(string? json, out IReadOnlyList<TaskItem> tasks, out string error)
     {
         tasks = Array.Empty<TaskItem>();

@@ -132,15 +132,48 @@ The 119-minute run displays the plan, rejects preparation and exits 1. Empty inp
 | Used exhaustive pattern matching | `PlanningWorkflow.Prepare`, `Confirm`, `PrepareDraft`; `Program.cs` and `PlanningPresentation` |
 | Safe transitions, explicit prerequisite and repetition rule | `Domain/PlanningWorkflow.cs` |
 | Actual pipeline input used by factory | Normal CLI and `RunWorkflowDemo` in `Program.cs` |
+| Map and Bind with failure skipping | `Domain/Result.cs`, `TaskParser.Parse`, the normal CLI and `Tests/ResultTests.cs` |
 | Pure domain decisions, immutable data | `Domain/`; copied collections and get-only properties |
 | Assertion tests and failure exit code | `Tests/Program.cs` and the test files below |
 
+## Map, Bind and stopping after failure
+
+The CLI reads the file into `Result<string>`, calls `.Bind(TaskParser.Parse)` and
+then `.Map(...)` to build the selected policy plans. File access stays in
+`Program.cs`; parsing stays in `Input/TaskParser.cs`; the three pure domain stages
+are unchanged.
+
+`Map` accepts a function returning an ordinary value: `T -> U`. On success it
+runs that function and wraps its value in `Result<U>`. `Bind` accepts a function
+returning another result: `T -> Result<U>`. It returns that result directly, so a
+failed parser does not produce a nested result or a partial plan. Neither method
+runs its callback on failure; both preserve the original error. They handle
+expected failures explicitly; they do not catch arbitrary programming errors.
+
+```csharp
+var minutes = Result<string>.Ok(json)
+    .Bind(TaskParser.Parse)
+    .Map(tasks => TaskPipeline.CreatePlan(tasks, date, 3, ScoringPolicies.ImportanceFirst))
+    .Map(plan => plan.TotalMinutes);
+```
+
+For valid sample data this produces `Success(120)`. For `samples/invalid.json`,
+parsing fails and neither planning nor scoring runs. `ResultTests.cs` proves this
+with callback counters that stay at zero. It also checks a file-read failure
+skips parsing and planning, and a failed bind skips subsequent binds and maps.
+
+For the defense, run the normal sample and `samples/invalid.json`, then show the
+four result tests. A small change to practise is making the short-task bonus
+start at 45 minutes: change its policy, calculate the new order and scores, and
+update the affected assertions before rebuilding.
+
 ## Tests
 
-Verification on October 18, 2026: build succeeded with **0 warnings and 0 errors; 40/40 tests passed**. The normal run and workflow demonstration matched the expected output above.
+Verification on October 18, 2026: build succeeded with **0 warnings and 0 errors; 44/44 tests passed**. The normal run and workflow demonstration matched the expected output above.
 
 | Test file | Expected assertions |
 | --- | --- |
+| `ResultTests.cs` | Valid Map/Bind composition; parser failure skips planning/scoring; read failure skips parsing; later callbacks remain uncalled after failed Bind. |
 | `InputTests.cs` | Reject malformed JSON, missing/null input and fields, invalid fields and duplicate IDs; accept 480 minutes and reject 481; accept zero-minute unfinished reminders. |
 | `SelectionTests.cs` | Select only eligible tasks; include exact importance threshold; reject invalid thresholds. |
 | `ScoringTests.cs` | Both policies give expected scores and different orders; delegate runs once per task. |
@@ -151,20 +184,18 @@ Verification on October 18, 2026: build succeeded with **0 warnings and 0 errors
 | `PlanningWorkflowTests.cs` | Pipeline-to-confirmation success; missing prerequisite; failed factory preparation; repeated confirmation/preparation; state and source collection preservation. |
 | `PlanningPresentationTests.cs` | Exact expected matching result for every state and both factory and transition outcomes. |
 
-There are 17 retained Assignment 5 tests and 23 Assignment 6 tests. They compare actual and expected values; printing the demonstration alone does not count as a test.
+There are 21 retained Assignment 5 tests and 23 Assignment 6 tests. They compare actual and expected values; printing the demonstration alone does not count as a test.
 
 ## Team work and defense
 
-The prepared four-person work split builds on Yerkebulan's existing DailyPlanner baseline. Each member reviews, adapts, tests and defends their part.
+The prepared four-person work split builds on Yerkebulan's existing DailyPlanner baseline. Each member reviews, adapts, tests and defends their part. Preparation used AI assistance.
 
 | Member, IT-2511 | Logic to review and develop | Tests to own |
 | --- | --- | --- |
-| Yerkebulan Abenov | Input and CLI; validated session factory and time-budget checks | `InputTests.cs`, `PlanningFactoryTests.cs` |
+| Yerkebulan Abenov | Input, CLI and Result composition; validated session factory and time-budget checks | `InputTests.cs`, `ResultTests.cs`, `PlanningFactoryTests.cs` |
 | Nurbergen Assan | Selection; closed planning-state model | `SelectionTests.cs`, `PlanningStateTests.cs` |
 | Amanalina Tumargul | Scoring; prepare and confirm transitions | `ScoringTests.cs`, `PlanningWorkflowTests.cs` |
 | Khalid Ahmad Ahmadi | Plan construction; eligibility rules and result presentation | `PlanTests.cs`, `PlanningRulesTests.cs`, `PlanningPresentationTests.cs` |
-
-Use case `4` in `handoff/ownership.json` and the `team-4` packages. `handoff/TEAM.md` keeps two- and three-person alternatives. The personal bundle's `START_HERE.md` gives the Git steps for both assignments.
 
 For the defense, trace the sample's 120-minute plan through Draft, factory validation, Prepared and Confirmed. Explain why 119 available minutes fails, why confirming a Draft fails and why confirming a Confirmed plan again is rejected. Point to the private validated constructor and the explicit switch branches. Each person should run and explain their assigned tests.
 
